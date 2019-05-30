@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtID"
+        android:layout_width="19dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:text="ID"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="371dp"
+        android:layout_height="138dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@+id/txtID"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txtTenSach"
+            android:layout_width="265dp"
+            android:layout_height="wrap_content"
+            android:text="Tên Sách"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtMoTa"
+            android:layout_width="265dp"
+            android:layout_height="275dp"
+            android:autoSizeTextType="uniform"
+            android:text="Mô tả"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txtGiaTien"
+            android:layout_width="177dp"
+            android:layout_height="wrap_content"
+            android:text="Giá Tiền" />
+
+        <TextView
+            android:id="@+id/txtSLCon"
+            android:layout_width="178dp"
+            android:layout_height="wrap_content"
+            android:text="SL" />
+
+        <TextView
+            android:id="@+id/txtTG"
+            android:layout_width="102dp"
+            android:layout_height="wrap_content"
+            android:text="Tác Giả"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txtTheLoai"
+            android:layout_width="101dp"
+            android:layout_height="wrap_content"
+            android:text="Thể Loại"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txtNXB"
+            android:layout_width="102dp"
+            android:layout_height="wrap_content"
+            android:text="NXB"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageSach"
+        android:layout_width="104dp"
+        android:layout_height="114dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="94dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="8dp"
+        android:text="Cập Nhật"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+    <Button
+        android:id="@+id/btnXoa"
+        android:layout_width="94dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Xóa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+</android.support.constraint.ConstraintLayout>

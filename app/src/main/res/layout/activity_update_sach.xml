@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#8DDB74"
+    tools:context=".UpdateSachActivity">
+
+    <Button
+        android:id="@+id/btnLuu"
+        android:layout_width="194dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Lưu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+
+    <Button
+        android:id="@+id/btnChonHinh"
+        android:layout_width="162dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="164dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Chọn hình"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="314dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="228dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/edtIDTG"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="ID Tác Giả"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="297dp" />
+
+        <EditText
+            android:id="@+id/edtIDTheLoai"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="ID Thể Loại"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="349dp" />
+
+        <EditText
+            android:id="@+id/edtIDNXB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="ID NXB"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="402dp" />
+
+        <EditText
+            android:id="@+id/edtTenSach"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Tên Sách"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="455dp" />
+
+        <Spinner
+            android:id="@+id/theLoaiSpinner"
+            android:layout_width="395dp"
+            android:layout_height="45dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="190dp" />
+
+        <Spinner
+            android:id="@+id/NXBSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="190dp" />
+
+        <Spinner
+            android:id="@+id/spinnerTacGia"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="190dp" />
+
+        <EditText
+            android:id="@+id/edtMoTa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Mô tả"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="455dp" />
+
+        <EditText
+            android:id="@+id/edtGiaTien"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number|textPersonName"
+            android:text="Giá Tiền"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="508dp" />
+
+        <EditText
+            android:id="@+id/edtSLCon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number|textPersonName"
+            android:text="Số Lượng Còn"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="561dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtTrinhTham4"
+        android:layout_width="395dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Thêm sách"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnHuy"
+        android:layout_width="194dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:text="Hủy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+
+    <ImageView
+        android:id="@+id/imgSach"
+        android:layout_width="164dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+</android.support.constraint.ConstraintLayout>

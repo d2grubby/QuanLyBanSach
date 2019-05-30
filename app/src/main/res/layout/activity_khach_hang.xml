@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtID"
+        android:layout_width="30dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="ID"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="349dp"
+        android:layout_height="192dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@+id/txtID"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txtTen"
+            android:layout_width="351dp"
+            android:layout_height="19dp"
+            android:text="Tên"
+            android:textStyle="bold"
+
+            tools:layout_editor_absoluteX="44dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+        <TextView
+            android:id="@+id/txtDiaChi"
+            android:layout_width="351dp"
+            android:layout_height="wrap_content"
+            android:text="Địa chỉ"
+            tools:layout_editor_absoluteX="44dp"
+            tools:layout_editor_absoluteY="176dp" />
+
+        <TextView
+            android:id="@+id/txtNgayDK"
+            android:layout_width="351dp"
+            android:layout_height="wrap_content"
+            android:text="Ngày đăng ký"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="45dp"
+            tools:layout_editor_absoluteY="39dp" />
+
+        <TextView
+            android:id="@+id/txtEmail"
+            android:layout_width="351dp"
+            android:layout_height="21dp"
+            android:text="Email"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="44dp"
+            tools:layout_editor_absoluteY="147dp" />
+
+        <TextView
+            android:id="@+id/txtTenDN"
+            android:layout_width="351dp"
+            android:layout_height="20dp"
+            android:text="Tên đăng nhập"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="44dp"
+            tools:layout_editor_absoluteY="92dp" />
+
+        <TextView
+            android:id="@+id/txtMatKhau"
+            android:layout_width="351dp"
+            android:layout_height="wrap_content"
+            android:text="Mật khẩu"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="44dp"
+            tools:layout_editor_absoluteY="120dp" />
+
+        <TextView
+            android:id="@+id/txtSDT"
+            android:layout_width="351dp"
+            android:layout_height="20dp"
+            android:text="Số Điện Thoại"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="44dp"
+            tools:layout_editor_absoluteY="238dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="337dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/btnCapNhat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cập nhật" />
+
+        <Button
+            android:id="@+id/btnXoa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Xóa" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtIDHD"
+        android:layout_width="30dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="ID"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="342dp"
+            android:layout_height="163dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/txtTenKH"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tên Khách hàng"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtDC"
+                android:layout_width="241dp"
+                android:layout_height="45dp"
+                android:text="Địa chỉ" />
+
+            <TextView
+                android:id="@+id/txtNgayDH"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ngày đặt hàng" />
+
+            <TextView
+                android:id="@+id/txtNgayGH"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ngày giao hàng" />
+
+            <TextView
+                android:id="@+id/txtTongTien"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tổng tiền"
+                android:textColor="#ED1C24"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtTT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tình trạng"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtLTT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thanh toán"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/btnChiTiet"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Chi Tiết"
+                tools:layout_editor_absoluteX="162dp"
+                tools:layout_editor_absoluteY="205dp" />
+
+            <Button
+                android:id="@+id/btnCapNhat"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Cập nhật"
+                tools:layout_editor_absoluteX="161dp"
+                tools:layout_editor_absoluteY="301dp" />
+
+            <Button
+                android:id="@+id/btnXoa"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Xóa"
+                tools:layout_editor_absoluteX="161dp"
+                tools:layout_editor_absoluteY="253dp" />
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>
