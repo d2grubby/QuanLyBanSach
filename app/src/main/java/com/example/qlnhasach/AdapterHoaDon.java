@@ -2,6 +2,7 @@ package com.example.qlnhasach;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -94,12 +95,12 @@ public class AdapterHoaDon extends BaseAdapter {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setIcon(android.R.drawable.ic_delete);
-                builder.setTitle("Xác nhận xóa");
-                builder.setMessage("Bạn có chắc chắn muốn xóa ?");
+                builder.setTitle("Xác nhận Hủy");
+                builder.setMessage("Bạn có chắc chắn muốn Hủy ?");
                 builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        delete(hoaDon.idHD);
+                        updateAndDelete(hoaDon.idHD);
                         if(DangNhap.mangUserType.get(0).getUserType().equals("user"))
                         {
                             Intent intent2 = new Intent(context, LichSuMuaHang.class);
@@ -125,23 +126,30 @@ public class AdapterHoaDon extends BaseAdapter {
 
         return row;
     }
-    private void delete (int idhd){
+
+    //Xóa hóa đơn
+    private void updateAndDelete (int idhd){
         SQLiteDatabase database = Database.initDatabase(context, "qlnhasach.sqlite");
+
+        //Update số lượng còn của những cuốn sách trong hóa đơn
+        Cursor cursor2 = database.rawQuery("SELECT * FROM chitiethoadon WHERE idhd = ?", new String[]{idhd + "",});
+
+        for (int i = 0; i < cursor2.getCount(); i++) {
+            cursor2.moveToPosition(i);
+            int idsach = cursor2.getInt(1);
+            int soluong = cursor2.getInt(2);
+
+            //Update số lượng còn
+            Cursor cursor3 = database.rawQuery("SELECT * FROM sach WHERE idsach = ?", new String[]{idsach + "",});
+            cursor3.moveToFirst();
+            int soluongcon = cursor3.getInt(8);
+            int soluongmoi = soluongcon + soluong;
+            ContentValues contentValues2 = new ContentValues();
+            contentValues2.put("soluongcon", soluongmoi);
+            database.update("sach", contentValues2, "idsach = ?", new String[]{idsach + ""});
+        }
+        database.delete("chitiethoadon", "idhd = ?", new String[]{idhd + ""});
         database.delete("hoadon", "idhd = ?", new String[]{idhd + ""});
 
-        Cursor cursor = database.rawQuery("select hoadon.idhd, tenkh, tongtien, hoadon.diachi, ngaydathang, ngaygiaohang, tinhtrang, loaithanhtoan from hoadon, khachhang where hoadon.idkh = khachhang.idkh group by hoadon.idhd, tenkh, tongtien, hoadon.diachi, ngaydathang, ngaygiaohang, tinhtrang, loaithanhtoan",null);
-        while(cursor.moveToNext()){
-            int id = cursor.getInt(0);
-            String tenKH = cursor.getString(1);
-            int tongtien = cursor.getInt(2);
-            String diachi = cursor.getString(3);
-            String ngaydh = cursor.getString(4);
-            String ngaygh = cursor.getString(5);
-            String tinhtrang = cursor.getString(6);
-            String loaitt = cursor.getString(7);
-
-            list.add(new HoaDon(id, tenKH, tongtien, diachi, ngaydh, ngaygh, tinhtrang, loaitt));
-        }
-        notifyDataSetChanged();
     }
 }

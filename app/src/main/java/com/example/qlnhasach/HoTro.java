@@ -24,9 +24,11 @@ public class HoTro extends MainActivity {
     Button btnGui,btnChonHinh;
     EditText edtNoiDung,edtChuDe;
     TextView txtEmailHoTro;
-    final int REQUEST_CHOOSE_PHOTO = 321;
     ImageView imageView;
-    URI FILENAME;
+    final int RQS_SENDEMAIL = 1;
+    final int RQS_LOADIMAGE = 0;
+    Uri imageUri = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +39,6 @@ public class HoTro extends MainActivity {
         txtEmailHoTro = (TextView) findViewById(R.id.txtEmailHoTro);
         edtNoiDung = (EditText) findViewById(R.id.edtNoiDung);
         edtChuDe = (EditText) findViewById(R.id.edtChuDe);
-
         btnChonHinh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,7 +49,6 @@ public class HoTro extends MainActivity {
         btnGui.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String s1 = edtNoiDung.getText().toString();
                 String s2 = edtChuDe.getText().toString();
 
@@ -61,41 +61,35 @@ public class HoTro extends MainActivity {
         });
     }
     private void choosePhoto(){
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, REQUEST_CHOOSE_PHOTO);
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, RQS_LOADIMAGE);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(resultCode == RESULT_OK)
-            if(requestCode == REQUEST_CHOOSE_PHOTO) {
-                try{
-                    Uri imageUrl = data.getData();
-                    InputStream is = getContentResolver().openInputStream(imageUrl);
-                    Bitmap bitmap = BitmapFactory.decodeStream(is);
-                    imageView.setImageBitmap(bitmap);
-//                    Bitmap myBitmap = imageView.getDrawingCache();
-//                    FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_WORLD_READABLE);
-//                    myBitmap.compress(Bitmap.CompressFormat.PNG, 0, fos);
-//                    fos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-    }
-    private byte[] getByteArrayFromImageView(ImageView imgv){
-        BitmapDrawable drawable = (BitmapDrawable) imgv.getDrawable();
-        Bitmap bmp =  drawable.getBitmap();
+        super.onActivityResult(requestCode, resultCode, data);
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        return byteArray;
+        if (resultCode == RESULT_OK){
+            switch(requestCode){
+                case RQS_LOADIMAGE:
+                    try {
+                        imageUri = data.getData();
+                        InputStream is = getContentResolver().openInputStream(imageUri);
+                        Bitmap bitmap = BitmapFactory.decodeStream(is);
+                        imageView.setImageBitmap(bitmap);
+                    }catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case RQS_SENDEMAIL:
+                    break;
+            }
+        }
     }
+
 
     private void sendMail(){
-        String emailHoTro = txtEmailHoTro.getText().toString();
-
+        String[] emailHoTro = {txtEmailHoTro.getText().toString()};
         String subject = edtChuDe.getText().toString();
         String message = edtNoiDung.getText().toString();
 
@@ -103,9 +97,20 @@ public class HoTro extends MainActivity {
         intent.putExtra(Intent.EXTRA_EMAIL, emailHoTro);
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, message);
-//        intent.putExtra(Intent.EXTRA)
+
+        if(imageUri != null){
+            intent.putExtra(Intent.EXTRA_STREAM, imageUri);
+            intent.setType("image/png");
+        }else{
+            intent.setType("plain/text");
+        }
 
         intent.setType("message/rfc822");
-        startActivity(Intent.createChooser(intent, "Choose an email client"));
+
+        try {
+            startActivity(Intent.createChooser(intent, "Chọn ứng dụng Email của bạn"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(HoTro.this, "Bạn hiện đang không có ứng dụng Email nào", Toast.LENGTH_SHORT).show();
+        }
     }
 }

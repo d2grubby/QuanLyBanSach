@@ -95,7 +95,7 @@ public class DangKy extends MainActivity {
                         }
                     }
                     else
-                        Toast.makeText(getApplicationContext(), "Mật khẩu và Xác nhận mật khẩu không trùng nhau", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Mật khẩu và Xác nhận mật khẩu phải giống nhau", Toast.LENGTH_SHORT).show();
                 }
             }
         });

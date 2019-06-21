@@ -26,6 +26,10 @@
     <item android:title="Tìm kiếm"
         android:id="@+id/menuSearch"/>
     <item
+        android:id="@+id/menuDetail"
+        android:title="Thông tin cá nhân"
+        android:visible="false" />
+    <item
         android:id="@+id/menuLSMH"
         android:title="Lịch sử mua hàng"
         android:visible="false" />

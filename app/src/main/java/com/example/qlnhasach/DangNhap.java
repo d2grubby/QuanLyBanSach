@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.ArrayList;
 
 public class DangNhap extends MainActivity {
@@ -29,6 +33,7 @@ public class DangNhap extends MainActivity {
     String email;
     String diaChi;
     int SDT;
+    private AdView mAdView;
 
 
     public int userpassword(String user, String password){
@@ -59,6 +64,12 @@ public class DangNhap extends MainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dang_nhap);
         addControls();
+
+        //Google Ads
+        MobileAds.initialize(this, "ca-app-pub-9301738350165510~8301387694");
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
     private void addControls(){
         database = Database.initDatabase(this, DATABASE_NAME);

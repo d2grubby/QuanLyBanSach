@@ -1,5 +1,6 @@
 package com.example.qlnhasach;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -78,11 +79,29 @@ public class DanhSachGioHang extends MainActivity {
         btnMua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(DangNhap.mangUserType.size() > 0)
                 {
-                    startActivity(new Intent(DanhSachGioHang.this, ChiTietDatHang.class)
-                            .putExtra("tongtien", tongtien));
+                    //Check số lượng còn so với giỏ hàng khách định đặt mua
+                    for (int i = 0; i < MainActivity.manggiohang.size(); i++) {
+                        int idsach = MainActivity.manggiohang.get(i).getIdsach();
+                        int soluong = MainActivity.manggiohang.get(i).getSoluongsach();
+                        String tenSach = MainActivity.manggiohang.get(i).getTensach();
+
+                        database = Database.initDatabase(DanhSachGioHang.this, DATABASE_NAME);
+                        Cursor cursor = database.rawQuery("SELECT * FROM sach WHERE idsach = ?", new String[]{idsach + "",});
+                        cursor.moveToFirst();
+                        int soluongcon = cursor.getInt(8);
+                        int soLuongDatHang = soluongcon - soluong;
+                        if(soLuongDatHang < 0)
+                        {
+                            Toast.makeText(DanhSachGioHang.this, "Sản phẩm " + tenSach + " chỉ còn " + String.valueOf(soluongcon), Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            startActivity(new Intent(DanhSachGioHang.this, ChiTietDatHang.class)
+                                    .putExtra("tongtien", tongtien));
+                        }
+                    }
                 }
                 else
                 {

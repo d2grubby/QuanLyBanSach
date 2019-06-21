@@ -28,7 +28,7 @@ import java.util.Calendar;
 public class ChiTietDatHang extends MainActivity {
     final String DATABASE_NAME = "qlnhasach.sqlite";
     SQLiteDatabase database;
-    TextView txtTen,txtDiaChi,txtSDT,txtNgayDH,txtNgayGH;
+    TextView txtTen, txtDiaChi, txtSDT, txtNgayDH, txtNgayGH;
     Button btnDatHang, btnPaypal;
 
     String tenKH = DangNhap.thongTinUser.get(0).getTenKH();
@@ -44,6 +44,7 @@ public class ChiTietDatHang extends MainActivity {
     int tongtien1;
     int idmoinhat;
     String loaithanhtoan;
+
     //Paypal
     public static String PAYPAL_CLIENT_ID = "AW76nDJdIlriwodD9jSeTUegjTSkwhpfdfRliHF20zuMux_gLXdEE_8A6pQ_4GY-2s8muaBVdHBdNmmt";
     public static final int PAYPAL_REQUEST_CODE = 7171;
@@ -53,31 +54,37 @@ public class ChiTietDatHang extends MainActivity {
     String amount;
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         stopService(new Intent(this, PayPalService.class));
         super.onDestroy();
     }
 
     @Override
-    protected void onActivityResult(int requestCode,int resultCode, Intent data){
-        if(requestCode == PAYPAL_REQUEST_CODE){
-            if(resultCode == RESULT_OK){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PAYPAL_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
                 PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-                if(confirmation != null)
-                {
+                if (confirmation != null) {
                     loaithanhtoan = "Thanh toán Paypal";
                     insertHoaDon();
                     layIDMoiNhat();
                     insertChiTietHoaDon();
+                    updateSoLuongCon(); //Update số lượng còn trong kho
                 }
-            }
-            else if(resultCode == Activity.RESULT_CANCELED)
+            } else if (resultCode == Activity.RESULT_CANCELED)
                 Toast.makeText(this, "Bạn chưa thanh toán hóa đơn !", Toast.LENGTH_SHORT).show();
-        }else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID)
+        } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID)
             Toast.makeText(this, "Bạn không đủ tiền thanh toán", Toast.LENGTH_SHORT).show();
     }
-    private void processPayment(){
-        amount = String.valueOf(tongtien1);
+
+    private double currencyConverter() {
+        double currencyUSD = 23383.13;
+        double uSD = tongtien1 / currencyUSD;
+        return uSD;
+    }
+
+    private void processPayment() {
+        amount = String.valueOf(currencyConverter());
         PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(amount)), "USD",
                 "Thanh toán hóa đơn sách", PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(this, PaymentActivity.class);
@@ -90,7 +97,7 @@ public class ChiTietDatHang extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chi_tiet_dat_hang);
-        tongtien1 =  getIntent().getExtras().getInt("tongtien");
+        tongtien1 = getIntent().getExtras().getInt("tongtien");
 
         Intent intent = new Intent(this, PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
@@ -129,6 +136,7 @@ public class ChiTietDatHang extends MainActivity {
                 insertHoaDon(); //Insert bảng hóa đơn đầu tiên
                 layIDMoiNhat(); //Lấy id của hóa đơn vừa tạo
                 insertChiTietHoaDon(); //Dùng id của hóa đơn vừa lấy + với các thông tin của các quyển sách đang có trong ArrayList manggiohang. Insert hết vào bảng chitiethoadon
+                updateSoLuongCon(); //Update số lượng còn trong kho
                 startActivity(new Intent(ChiTietDatHang.this, MainActivity.class));
                 Toast.makeText(getApplicationContext(), "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
             }
@@ -141,7 +149,8 @@ public class ChiTietDatHang extends MainActivity {
             }
         });
     }
-    private void insertHoaDon(){
+
+    private void insertHoaDon() {
         int idkh = DangNhap.thongTinUser.get(0).getIdKH();
         int tongtien = tongtien1;
         String diachi = DangNhap.thongTinUser.get(0).getDiaChi();
@@ -161,19 +170,19 @@ public class ChiTietDatHang extends MainActivity {
 
 
         SQLiteDatabase database = Database.initDatabase(this, "qlnhasach.sqlite");
-        database.insert("hoadon",null, contentValues);
+        database.insert("hoadon", null, contentValues);
     }
 
-    private void layIDMoiNhat(){ //Lấy id hóa đơn gần đây nhất (vừa insert vào bảng) của khách hàng đã đăng nhập
+    private void layIDMoiNhat() { //Lấy id hóa đơn gần đây nhất (vừa insert vào bảng) của khách hàng đã đăng nhập
         database = Database.initDatabase(this, DATABASE_NAME);
         int idUser = DangNhap.mangUserType.get(0).getIdUser();
         Cursor cursor = database.rawQuery("SELECT * FROM hoadon where idkh = ? ORDER BY idhd DESC LIMIT 1", new String[]{idUser + "",});
-        if(cursor.moveToFirst() && cursor.getCount() > 0) {
+        if (cursor.moveToFirst() && cursor.getCount() > 0) {
             idmoinhat = cursor.getInt(0);
         }
     }
 
-    private void insertChiTietHoaDon(){
+    private void insertChiTietHoaDon() {
         for (int i = 0; i < MainActivity.manggiohang.size(); i++) { //Có bao nhiêu sách trong mảng arraylist trong giỏ hàng thì insert bấy nhiêu
             int idhd = idmoinhat;
             int idsach = MainActivity.manggiohang.get(i).getIdsach();
@@ -189,9 +198,34 @@ public class ChiTietDatHang extends MainActivity {
             contentValues.put("thanhtien", thanhtien);
 
             SQLiteDatabase database = Database.initDatabase(this, "qlnhasach.sqlite");
-            database.insert("chitiethoadon",null, contentValues);
+            database.insert("chitiethoadon", null, contentValues);
         }
     }
 
+    private void updateSoLuongCon() {
+        for (int i = 0; i < MainActivity.manggiohang.size(); i++) { //Có bao nhiêu sách trong mảng arraylist trong giỏ hàng thì update số lượng bấy nhiêu
+            int idsach = MainActivity.manggiohang.get(i).getIdsach();
+            int soluong = MainActivity.manggiohang.get(i).getSoluongsach();
 
+            //Update số lượng còn
+            database = Database.initDatabase(this, DATABASE_NAME);
+            Cursor cursor = database.rawQuery("SELECT * FROM sach WHERE idsach = ?", new String[]{idsach + "",});
+            cursor.moveToFirst();
+            int soluongcon = cursor.getInt(8);
+            int soluongmoi = soluongcon - soluong;
+            if(soluongmoi <= 0)
+            {
+                soluongmoi = 0;
+                ContentValues contentValues2 = new ContentValues();
+                contentValues2.put("soluongcon", soluongmoi);
+                database.update("sach", contentValues2, "idsach = ?", new String[]{idsach + ""});
+            }
+            else
+            {
+                ContentValues contentValues2 = new ContentValues();
+                contentValues2.put("soluongcon", soluongmoi);
+                database.update("sach", contentValues2, "idsach = ?", new String[]{idsach + ""});
+            }
+        }
+    }
 }

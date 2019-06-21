@@ -4,12 +4,12 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/qlbslogo"
         android:label="Menu"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".danhSachTimKiemGiaTien"></activity>
+        <activity android:name=".ThongTinCaNhanActivity"></activity>
+        <activity android:name=".danhSachTimKiemGiaTien" />
         <activity android:name=".DangKy" />
         <activity android:name=".danhSachTimKiem" />
         <activity android:name=".timKiem" />
@@ -31,9 +31,9 @@
         <activity android:name=".NXB" />
         <activity android:name=".TheLoai" />
         <activity android:name=".TacGia" />
-        <activity android:name=".Chitiet_sach"/>
-        <activity android:name=".DanhSachGioHang"/>
-        <activity android:name=".ThanhToanActivity"/>
+        <activity android:name=".Chitiet_sach" />
+        <activity android:name=".DanhSachGioHang" />
+        <activity android:name=".ThanhToanActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,6 +42,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".SachTrinhTham" />
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9301738350165510~8301387694"/>
     </application>
 
 </manifest>

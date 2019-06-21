@@ -1,8 +1,6 @@
 package com.example.qlnhasach;
 
-import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,15 +8,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             DangNhap.thongTinUser = new ArrayList<>();
         }
+
         addControls();
         readData();
         importKhachHangFirebaseDataToSQLite();
@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         MenuItem logout = menu.findItem(R.id.menuLogout);
         MenuItem lsmh = menu.findItem(R.id.menuLSMH);
         MenuItem giohang = menu.findItem(R.id.menuGioHang);
+        MenuItem thongtincanhan = menu.findItem(R.id.menuDetail);
+        MenuItem hotro = menu.findItem(R.id.menuHoTro);
 
         if(DangNhap.mangUserType.size() == 0)
         {
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
             register.setVisible(false);
             logout.setVisible(true);
             lsmh.setVisible(true);
+            thongtincanhan.setVisible(true);
         }
         else if(DangNhap.mangUserType.get(0).getUserType().equals("admin"))
         {
@@ -98,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             register.setVisible(false);
             logout.setVisible(true);
             giohang.setVisible(false);
+            hotro.setVisible(false);
         }
 
         return true;
@@ -130,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(id == R.id.menuLogin){
             startActivity(new Intent(this, DangNhap.class));
+        }
+        else if(id == R.id.menuDetail){
+            startActivity(new Intent(this, ThongTinCaNhanActivity.class));
         }
         else if(id == R.id.menuRegister){
             startActivity(new Intent(this, DangKy.class));

@@ -110,7 +110,7 @@
                 android:id="@+id/btnXoa"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Xóa"
+                android:text="Hủy"
                 tools:layout_editor_absoluteX="161dp"
                 tools:layout_editor_absoluteY="253dp" />
         </LinearLayout>

@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -37,7 +38,7 @@ public class Chitiet_sach extends MainActivity {
     int id = -1;
     SQLiteDatabase database;
     Button btnDatMua,btnGuiBL;
-    TextView txtTenSach,txtGiaTien,txtMoTa;
+    TextView txtTenSach,txtGiaTien,txtMoTa, txtTinhTrang;
     ImageView imgSach2;
     private Spinner spinner;
     ArrayList<BinhLuanModel> listBL;
@@ -66,6 +67,7 @@ public class Chitiet_sach extends MainActivity {
         String moTa = cursor.getString(5);
         final byte[] anhBia = cursor.getBlob(6);
         final String giaTien = cursor.getString(7);
+        final int soLuongCon = cursor.getInt(8);
 
         Bitmap bmSach = BitmapFactory.decodeByteArray(anhBia, 0, anhBia.length);
         imgSach2.setImageBitmap(bmSach);
@@ -73,42 +75,67 @@ public class Chitiet_sach extends MainActivity {
         txtGiaTien.setText("Giá: " + giaTien + " đ");
         txtMoTa.setText(moTa);
 
+        if(soLuongCon <= 0)
+        {
+            txtTinhTrang.setText("Hết hàng");
+            btnDatMua.setVisibility(View.INVISIBLE);
+        }
+
         Integer[] soLuong =  new Integer[]{1,2,3,4,5,6,7,8,9,10};
         ArrayAdapter<Integer> arrayAdapter =  new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_dropdown_item,soLuong);
         spinner.setGravity(Gravity.CENTER);
         spinner.setAdapter(arrayAdapter);
+
         btnDatMua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(MainActivity.manggiohang.size()>0){
-                    int sl = Integer.parseInt(spinner.getSelectedItem().toString());
-                    boolean exists = false;
-                    int id = getIntent().getIntExtra("ID",-1);
-                    for(int i =0;i<MainActivity.manggiohang.size();i++){
-                        if(MainActivity.manggiohang.get(i).getIdsach() == id){
-                            MainActivity.manggiohang.get(i).setSoluongsach(MainActivity.manggiohang.get(i).getSoluongsach() + sl);
-                            if(MainActivity.manggiohang.get(i).getSoluongsach()>=10){
-                                MainActivity.manggiohang.get(i).setSoluongsach(10);
+                Cursor cursor = database.rawQuery("Select * from Sach where idsach = ?",new String[]{id + ""});
+                cursor.moveToFirst();
+                final int soLuongCon = cursor.getInt(8);
+                if(soLuongCon <= 0)
+                {
+                    txtTinhTrang.setText("Hết hàng");
+                    btnDatMua.setVisibility(View.INVISIBLE);
+                }
+                else {
+                    int soLuongMua = Integer.parseInt(spinner.getSelectedItem().toString());
+                    if (soLuongMua > soLuongCon)
+                    {
+                        Toast.makeText(getApplicationContext(), "Hiện số lượng chỉ còn " + String.valueOf(soLuongCon), Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        if(MainActivity.manggiohang.size()>0){
+                            int sl = Integer.parseInt(spinner.getSelectedItem().toString());
+                            boolean exists = false;
+                            int id = getIntent().getIntExtra("ID",-1);
+                            for(int i =0;i<MainActivity.manggiohang.size();i++){
+                                if(MainActivity.manggiohang.get(i).getIdsach() == id){
+                                    MainActivity.manggiohang.get(i).setSoluongsach(MainActivity.manggiohang.get(i).getSoluongsach() + sl);
+                                    if(MainActivity.manggiohang.get(i).getSoluongsach()>=10){
+                                        MainActivity.manggiohang.get(i).setSoluongsach(10);
+                                    }
+                                    MainActivity.manggiohang.get(i).setGiatien(Integer.parseInt(giaTien) * MainActivity.manggiohang.get(i).getSoluongsach());
+                                    exists = true;
+                                }
                             }
-                            MainActivity.manggiohang.get(i).setGiatien(Integer.parseInt(giaTien) * MainActivity.manggiohang.get(i).getSoluongsach());
-                            exists = true;
+                            if(exists == false){
+                                int soLuong = Integer.parseInt(spinner.getSelectedItem().toString());
+                                int giaMoi = soLuong * Integer.parseInt(giaTien);
+                                id = getIntent().getIntExtra("ID",-1);
+                                MainActivity.manggiohang.add(new GioHang(id, tenSach, giaMoi, anhBia, soLuong));
+                            }
                         }
-                    }
-                    if(exists == false){
-                        int soLuong = Integer.parseInt(spinner.getSelectedItem().toString());
-                        int giaMoi = soLuong * Integer.parseInt(giaTien);
-                        id = getIntent().getIntExtra("ID",-1);
-                        MainActivity.manggiohang.add(new GioHang(id, tenSach, giaMoi, anhBia, soLuong));
+                        else{
+                            int soLuong = Integer.parseInt(spinner.getSelectedItem().toString());
+                            int giaMoi = soLuong * Integer.parseInt(giaTien);
+                            int id = getIntent().getIntExtra("ID",-1);
+                            MainActivity.manggiohang.add(new GioHang(id, tenSach, giaMoi, anhBia, soLuong));
+                        }
+                        Intent intent1 = new Intent(getApplicationContext(), DanhSachGioHang.class);
+                        startActivity(intent1);
                     }
                 }
-                else{
-                    int soLuong = Integer.parseInt(spinner.getSelectedItem().toString());
-                    int giaMoi = soLuong * Integer.parseInt(giaTien);
-                    int id = getIntent().getIntExtra("ID",-1);
-                    MainActivity.manggiohang.add(new GioHang(id, tenSach, giaMoi, anhBia, soLuong));
-                }
-                Intent intent1 = new Intent(getApplicationContext(), DanhSachGioHang.class);
-                startActivity(intent1);
             }
         });
         btnGuiBL.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +161,7 @@ public class Chitiet_sach extends MainActivity {
         imgSach2 = (ImageView) findViewById(R.id.imgSach2);
         spinner = (Spinner) findViewById(R.id.spinnerSoLuong);
         btnGuiBL = (Button) findViewById(R.id.btnGuiBL);
+        txtTinhTrang = (TextView) findViewById(R.id.txtTinhTrang);
 
         listViewBL = (ListView) findViewById(R.id.listViewBL);
         listBL = new ArrayList<>();
